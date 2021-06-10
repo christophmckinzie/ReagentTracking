@@ -1,6 +1,6 @@
 # ReagentTracking
 
-The application serves as a means to scan allergen tubes received from seimens into a sql database. 
+The application serves as a means to scan allergen tubes received from seimens into a sql database, display/edit the database and generate a order list for said allergens. 
 
 Immulite Scanning GUI - created using PyQt5, a python wrapper for QT applications. 
 - Logging into the application only requires the correct password. The user can choose any username. The program only uses the username for creating a log of the items scanned into the database. 
