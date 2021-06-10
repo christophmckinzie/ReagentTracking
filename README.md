@@ -1,4 +1,4 @@
-# ReagentTracking
+# Reagent Tracking
 
 The application serves as a means to scan allergen tubes received from seimens into a sql database, display/edit the database and generate a order list for said allergens. 
 
