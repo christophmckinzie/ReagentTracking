@@ -19,34 +19,34 @@ class Login(QDialog):
 
         layout = QFormLayout()
 
-        self.textName = QLineEdit(self)
-        self.textName.setStyleSheet('font-size: 10pt')
-        self.textName_label = QLabel("Username")
-        self.textName_label.setAlignment(Qt.AlignCenter)
-        self.textName_label.setStyleSheet('font-size: 10pt;')
-        layout.addRow(self.textName_label, self.textName)
+        self.text_name = QLineEdit(self)
+        self.text_name.setStyleSheet('font-size: 10pt')
+        name_label = QLabel("Username")
+        name_label.setAlignment(Qt.AlignCenter)
+        name_label.setStyleSheet('font-size: 10pt;')
+        layout.addRow(name_label, self.text_name)
 
-        self.textPass = QLineEdit(self)
-        self.textPass.setStyleSheet('font-size: 10pt')
-        self.textPass_label = QLabel("Password")
-        self.textPass_label.setAlignment(Qt.AlignCenter)
-        self.textPass_label.setStyleSheet('font-size: 10pt;')
-        layout.addRow(self.textPass_label, self.textPass)
+        self.text_pass = QLineEdit(self)
+        self.text_pass.setStyleSheet('font-size: 10pt')
+        pass_label = QLabel("Password")
+        pass_label.setAlignment(Qt.AlignCenter)
+        pass_label.setStyleSheet('font-size: 10pt;')
+        layout.addRow(pass_label, self.text_pass)
 
-        self.buttonLogin = QPushButton('Login', self)
-        self.buttonLogin.setStyleSheet('font-size: 10pt;')
-        self.buttonLogin.clicked.connect(self.createConnection)
-        layout.addWidget(self.buttonLogin)
+        button_login = QPushButton('Login', self)
+        button_login.setStyleSheet('font-size: 10pt;')
+        button_login.clicked.connect(self.createConnection)
+        layout.addWidget(button_login)
         
         self.setLayout(layout)
         self.show()
 
     def createConnection(self):
-        if self.textPass.text() in ('PASSWORD'):
+        if self.text_pass.text() in ('PASSWORD'):
             
             # set username for app instance
             global app_instance_username
-            app_instance_username = self.textName.text()
+            app_instance_username = self.text_name.text()
 
             # sets dialog box response to accepted
             self.accept()
@@ -54,9 +54,9 @@ class Login(QDialog):
             # set global variable for connection to database
             global db
             db = QSqlDatabase.addDatabase("QPSQL")
-            db.setHostName("IP_ADDRESS")
+            db.setHostName("localhost")
             db.setDatabaseName("DB_NAME")
-            db.setUserName("postgres")
+            db.setUserName("USERNAME")
             db.setPassword("PASSWORD")
             
             if not db.open():
@@ -81,23 +81,23 @@ class MainWindow(QMainWindow):
 
         # action to open database viewing window
         viewdb_action = QAction("Database", self)
-        viewdb_action.triggered.connect(self.openDatabaseWindow)
+        viewdb_action.triggered.connect(self.open_database_window)
 
         # action to open database viewing window
         viewexp_action = QAction("Expiring Allergens", self)
-        viewexp_action.triggered.connect(self.openExpiringWindow)
+        viewexp_action.triggered.connect(self.open_expiring_window)
 
         # action to open add/remove allergen window
         addallergen_action = QAction("Add Allergen", self)
-        addallergen_action.triggered.connect(self.openAddAllergenWindow)
+        addallergen_action.triggered.connect(self.open_add_allergen_window)
         
         # action to save ordering list
         generate_order_action = QAction("Export Order List CSV", self)
-        generate_order_action.triggered.connect(self.generateOrderListCSV)
+        generate_order_action.triggered.connect(self.generate_order_list_csv)
 
         # action to open window to scan items out of database when loading immulite
         load_immulite_action = QAction("Load Immulite", self)
-        load_immulite_action.triggered.connect(self.openLoadImmulite)
+        load_immulite_action.triggered.connect(self.open_load_immulite)
 
         # menubar
         self.menuBar = self.menuBar()
@@ -114,7 +114,7 @@ class MainWindow(QMainWindow):
         loadImmuliteMenu.addAction(load_immulite_action)
 
         # get list of approved allergens
-        self.allergens = self.getAllergenList()
+        self.allergens = self.get_allergen_list()
 
         # create list for adding scanned barcodes to txt file log
         self.scan_log = list()
@@ -123,23 +123,23 @@ class MainWindow(QMainWindow):
         self.scan_display = list()
 
         # Text telling user what window is used for
-        self.directions = QLabel("This window is for scanning the barcodes of RECEIVED allergens INTO the database")
-        self.directions.setStyleSheet('font-size: 12pt;')
-        self.directions.setAlignment(Qt.AlignCenter)
-        self.layout.addWidget(self.directions)    
+        directions = QLabel("This window is for scanning the barcodes of RECEIVED allergens INTO the database")
+        directions.setStyleSheet('font-size: 12pt;')
+        directions.setAlignment(Qt.AlignCenter)
+        self.layout.addWidget(directions)    
 
         #  add barcode widget
         self.barcode = QLineEdit()
         self.barcode.setStyleSheet('font-size: 11pt;')
         self.barcode.setPlaceholderText("Scan barcode here")
-        self.barcode.textChanged.connect(self.hasComma)
+        self.barcode.textChanged.connect(self.has_comma)
         self.layout.addRow(self.barcode)
 
         # add pushbutton
-        self.displayScannedItems = QPushButton("Display Scanned Items", self)
-        self.displayScannedItems.setStyleSheet('font-size: 10pt;')
-        self.layout.addWidget(self.displayScannedItems)
-        self.displayScannedItems.clicked.connect(self.displayScanCounts)
+        display_scanned_items = QPushButton("Display Scanned Items", self)
+        display_scanned_items.setStyleSheet('font-size: 10pt;')
+        self.layout.addWidget(display_scanned_items)
+        display_scanned_items.clicked.connect(self.display_scan_counts)
 
         # add layout to widget and set as central widget
         widget = QWidget()
@@ -147,7 +147,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(widget)        
 
     # add close event. write scan_log to log textfile
-    def closeEvent(self, event):
+    def close_event(self, event):
         if len(self.scan_display) > 0:
             today = datetime.today().strftime("%y%m%d_%H%M%S")
             file_name = f'''...../.../{today}_scanlog.csv'''
@@ -163,13 +163,13 @@ class MainWindow(QMainWindow):
             pass
 
     # wait for barcode to have comma
-    def hasComma(self):
+    def has_comma(self):
         if ',' in self.barcode.text():
             if len(self.barcode.text().split(',')[1]) == 6:
                 # self.barcode.setUpdatesEnabled(False)
-                self.parseBarcode()
+                self.parse_barcode()
 
-    def parseBarcode(self):
+    def parse_barcode(self):
         try:
             # check if user used scanner to input text
             self.barcode_text = self.barcode.text()
@@ -239,7 +239,7 @@ class MainWindow(QMainWindow):
                 "QTableView Example - Error!",
                 "Database Error: %s \n The database could not be updated. " % db.lastError())
 
-    def displayScanCounts(self):
+    def display_scan_counts(self):
         # this try/except checks if the QTableView widget is already displayed and removes it then adds the updated widget.
         try:
             self.layout.removeWidget(self.view)
@@ -260,7 +260,7 @@ class MainWindow(QMainWindow):
         self.view.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.layout.addWidget(self.view)
         
-    def getAllergenList(self):
+    def get_allergen_list(self):
         # get allergens from sql db
         try:
             qry_text = "SELECT id FROM allergen_stock"
@@ -273,7 +273,7 @@ class MainWindow(QMainWindow):
             QMessageBox.about(self, 'Connection', 'Database failure.')
         return allergens
 
-    def getExpiringAllergens(self):
+    def get_expiring_allergens(self):
         # get allergens from sql db
         try:
             qry_text = "SELECT * FROM allergen_list"
@@ -286,7 +286,7 @@ class MainWindow(QMainWindow):
             QMessageBox.about(self, 'Connection', 'Database failure.')
         return allergens
 
-    def generateOrderListCSV(self):
+    def generate_order_list_csv(self):
         # query sql db to get allergens below threshold
         try:
             qry_text = "SELECT id, catalog_number, order_quantity FROM allergen_stock WHERE current_stock < minimum_tubes"
@@ -309,19 +309,19 @@ class MainWindow(QMainWindow):
             file.write(df.to_csv(index=False, header=False, line_terminator='\n'))
             file.close()
 
-    def openExpiringWindow(self):
+    def open_expiring_window(self):
         self.eUI = ExpiringUI()
         self.eUI.show()
 
-    def openDatabaseWindow(self):
+    def open_database_window(self):
         self.dUI = DatabaseUI()
         self.dUI.show()
 
-    def openAddAllergenWindow(self):
+    def open_add_allergen_window(self):
         self.aUI = AddAllergenUI()
         self.aUI.show()
 
-    def openLoadImmulite(self):
+    def open_load_immulite(self):
         self.lUI = LoadImmuliteUI()
         self.lUI.show()
 
@@ -476,39 +476,39 @@ class LoadImmuliteUI(QWidget):
         self.layout = QFormLayout()
 
         # get list of approved allergens
-        self.allergens = self.getAllergenList()
+        self.allergens = self.get_allergen_list()
 
         # Text telling user what window is used for
-        self.directions = QLabel("Scan the barcodes of allergens loaded onto the Immulites here")
-        self.directions.setStyleSheet('font-size: 12pt;')
-        self.layout.addWidget(self.directions)
+        directions = QLabel("Scan the barcodes of allergens loaded onto the Immulites here")
+        directions.setStyleSheet('font-size: 12pt;')
+        self.layout.addWidget(directions)
 
         #  add barcode widget
         self.barcode = QLineEdit()
         self.barcode.setPlaceholderText("Scan barcode here")
         self.barcode.setStyleSheet('font-size: 10pt')
-        self.barcode.textChanged.connect(self.hasComma)
+        self.barcode.textChanged.connect(self.has_comma)
         self.layout.addRow( self.barcode)
 
         # add pushbutton
         self.scan_display = list()
-        self.displayScannedItems = QPushButton("Display Scanned Items", self)
-        self.displayScannedItems.setStyleSheet('font-size: 10pt;')
-        self.layout.addWidget(self.displayScannedItems)
-        self.displayScannedItems.clicked.connect(self.displayScanCounts)
+        display_scanned_items = QPushButton("Display Scanned Items", self)
+        display_scanned_items.setStyleSheet('font-size: 10pt;')
+        self.layout.addWidget(display_scanned_items)
+        display_scanned_items.clicked.connect(self.display_scan_counts)
 
         # add layout 
         self.setLayout(self.layout)
         self.show()
 
     # wait for barcode to have comma
-    def hasComma(self):
+    def has_comma(self):
         if ',' in self.barcode.text():
             if len(self.barcode.text().split(',')[1]) == 6:
                 # self.barcode.setUpdatesEnabled(False)
-                self.parseBarcode()
+                self.parse_barcode()
 
-    def parseBarcode(self):
+    def parse_barcode(self):
         # check if user used scanner to input text
         self.allergen_id = self.barcode.text()
 
@@ -567,7 +567,7 @@ class LoadImmuliteUI(QWidget):
                 "QTableView Example - Error!",
                 "Database Error: %s \n The database could not be updated. " % db.lastError())
         
-    def getAllergenList(self):
+    def get_allergen_list(self):
         # get allergens from sql db
         try:
             qry_text = "SELECT id FROM allergen_stock"
@@ -580,7 +580,7 @@ class LoadImmuliteUI(QWidget):
             QMessageBox.about(self, 'Connection', 'Database failure.')
         return allergens
 
-    def displayScanCounts(self):
+    def display_scan_counts(self):
         # this try/except checks if the QTableView widget is already displayed and removes it then adds the updated widget.
         try:
             self.layout.removeWidget(self.view)
@@ -652,13 +652,13 @@ class AddAllergenUI(QWidget):
         font-size: 15px;''')
 
         vbox.addWidget(self.button)
-        self.button.clicked.connect(self.InsertAllergen)
+        self.button.clicked.connect(self.insert_allergen)
 
         self.setLayout(vbox)
         self.show()
 
 
-    def InsertAllergen(self):
+    def insert_allergen(self):
         try:
             query = QSqlQuery()
             qry_text = f"""INSERT INTO allergen_stock (id, catalog_number, current_stock, order_quantity, minimum_tubes) VALUES (
