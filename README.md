@@ -1,6 +1,6 @@
 # Reagent Tracking
 
-Immulite Scanning GUI - created using PyQt5, a python wrapper for QT applications.
+Immulite Scanning GUI - created using PyQt5, a python wrapper for Qt applications.
 This application is used to scan Immulite reagents received from Seimens into a sql database, display/edit the database and generate a order list for said allergens. 
  
 - Logging into the application only requires the correct password. The user can choose any username. The program only uses the username for creating a log of the items scanned into the database. 
@@ -12,3 +12,6 @@ This application is used to scan Immulite reagents received from Seimens into a 
 - There is also a 'view expiring allergens' window that displays allergens have expired or ones that will be expiring within a months time. There is a push button to delete those items that have expired. 
 - If a new allergen is added to the testing options it can be added to the database using the 'add allergen' window. 
 - to export a csv file of allergens with low volume, you can use the 'export csv' window. The csv file contains the catalog number of the allergen and the number of tubes to order. This number to order may change depending on the testing demand for each panel. 
+
+## Important Notice
+PyQt5 has a driver issue with both MySQL and Postgresql. qsqlpsql.dll needs libpq.dll from PostgreSQL\9.3\libfolder. Add libpq.dll to C:\...\venv\Lib\site-packages\PyQt5\Qt\bin (I just copied all dll files from PostgreSQL\9.3\libfolder to the Qt\bin.). This seems to get PyQt5 working for Postgresql, but to get it to work for MySQL more tinkering was required.
