@@ -2,7 +2,7 @@
 
 Immulite Scanning GUI - created using PyQt5, a python wrapper for Qt applications.\
 \
-This application is used to scan Immulite reagents received from Seimens into a sql database, display/edit the database and generate a order list for said allergens.
+This application is used to scan Immulite reagents received from Seimens into a sql database, display/edit the database and generate a order list for the reagents.
 
 - Logging into the application only requires the correct password. The user can choose any username. The program only uses the username for creating a log of the items scanned into the database. 
 - Scanning the tubes in the main window adds to the tube count for that allergen. It also adds that specific tube to another sql table that contains all tubes on hand, until scanned out. This tube list is used for checking expiring tubes as some allergen tubes are used infrequently.
