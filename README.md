@@ -4,8 +4,7 @@ Immulite Scanning GUI - created using PyQt5, a python wrapper for Qt application
 \
 This application is used to scan Immulite reagents received from Seimens into a sql database, display/edit the database and generate a order list for said allergens.\
 \
-Variable naming needs to be put in accordance with pep8.
- 
+
 - Logging into the application only requires the correct password. The user can choose any username. The program only uses the username for creating a log of the items scanned into the database. 
 - Scanning the tubes in the main window adds to the tube count for that allergen. It also adds that specific tube to another sql table that contains all tubes on hand, until scanned out. This tube list is used for checking expiring tubes as some allergen tubes are used infrequently.
 - When a barcode is scanned the computer enters one character at a time. An example barcode is 'F300L2621,211130'. The program is looking for a ',' while the barcode is being read in then checks if the length of the string after the ',' is equal to six (the expiration data is six characters long). The allergen id is determined by splitting the barcode at the 'L'. 
